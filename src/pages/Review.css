@@ -74,3 +74,5 @@
 .analyze-link:hover { color: var(--accent-hover); }
 .nav-analyze { padding: 8px 12px; font-size: 13px; }
 .rep-summary { padding: 8px 12px; background: var(--bg-elev); border-radius: var(--radius-sm); }
+.tactic-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tactic-tag { font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--fc) 16%, transparent); color: var(--fc); animation: fade-in 240ms var(--ease); }

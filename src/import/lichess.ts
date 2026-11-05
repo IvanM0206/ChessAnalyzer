@@ -3,6 +3,8 @@ import { pgnToGame } from './pgn';
 
 export interface LichessOptions {
   max: number;
+  /** only games played after this timestamp (ms) */
+  since?: number;
   onProgress?: (p: { games: number; total: number }) => void;
   signal?: AbortSignal;
 }
@@ -49,7 +51,8 @@ export async function fetchLichessGames(user: string, opts: LichessOptions): Pro
   if (!name) throw new Error('Ingresá un usuario de Lichess.');
   const url =
     `https://lichess.org/api/games/user/${encodeURIComponent(name)}` +
-    `?max=${opts.max}&pgnInJson=true&opening=true&clocks=false`;
+    `?max=${opts.max}&pgnInJson=true&opening=true&clocks=false` +
+    (opts.since ? `&since=${opts.since}` : '');
   let res: Response;
   try {
     res = await fetch(url, { headers: { Accept: 'application/x-ndjson' }, signal: opts.signal });

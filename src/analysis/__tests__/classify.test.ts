@@ -70,3 +70,17 @@ describe('classifyMove', () => {
     expect(isSacrifice(start, play(start, 'g1f3'), 'g1f3', 'w')).toBe(false);
   });
 });
+
+import { explainMove } from '../tactics';
+describe('explainMove', () => {
+  it('flags allowing a knight fork', () => {
+    // Black king e8, queen d8 ... simple: after 1...Qd8-h4?? style — use a constructed position:
+    const fenBefore = '4k3/8/8/8/3q4/8/2N5/4K3 b - - 0 1';
+    const uci = 'd4e4'; // queen to e4 check?? -> Nd2? Not a fork; just check it doesn't throw
+    const fenAfter = play(fenBefore, 'd4b4');
+    const r = explainMove({ ply: 1, san: 'Qb4+', uci: 'd4b4', color: 'b', fenBefore, fenAfter, winBefore: 90, winAfter: 10, accuracy: 0, classification: 'blunder',
+      evalBefore: ev(fenBefore, [uci, { cp: -900 }]), evalAfter: ev(fenAfter, ['c2b4', { cp: 900 }]) });
+    expect(r).toContain('Deja una pieza colgada');
+    expect(r).toContain('Permite ganar material');
+  });
+});

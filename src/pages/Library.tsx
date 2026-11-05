@@ -4,6 +4,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../db/db';
 import { IconImport, IconSearch, IconTrash } from '../components/Icons';
 import { useToast } from '../lib/toast';
+import { syncNewGames } from '../import/sync';
 import type { Color, Game, TimeClass } from '../types';
 import './Library.css';
 
@@ -113,7 +114,10 @@ export default function LibraryPage() {
           <h1>Mis partidas</h1>
           <p>{filtered.length === games.length ? `${games.length} partidas` : `${filtered.length} de ${games.length} partidas`}</p>
         </div>
-        <Link to="/import" className="btn"><IconImport width={18} height={18} />Importar</Link>
+        <div className="row">
+          <SyncButton />
+          <Link to="/import" className="btn"><IconImport width={18} height={18} />Importar</Link>
+        </div>
       </div>
 
       <div className="lib-filters card">
@@ -211,5 +215,26 @@ export default function LibraryPage() {
         </div>
       )}
     </div>
+  );
+}
+
+function SyncButton() {
+  const toast = useToast();
+  const [busy, setBusy] = useState<string | null>(null);
+  const run = async () => {
+    setBusy('Buscando…');
+    try {
+      const r = await syncNewGames(setBusy);
+      if (!r.sources.length) toast('Configurá tu usuario de Chess.com o Lichess en Configuración.', 'error');
+      else toast(r.added ? `${r.added} partidas nuevas de ${r.sources.join(' y ')}` : 'No hay partidas nuevas');
+    } catch (e) {
+      toast((e as Error).message || 'No se pudieron traer las partidas.', 'error');
+    } finally { setBusy(null); }
+  };
+  return (
+    <button className="btn btn-primary" onClick={run} disabled={!!busy}>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={busy ? 'spin' : undefined}><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" /></svg>
+      {busy ?? 'Traer nuevas'}
+    </button>
   );
 }

@@ -17,6 +17,8 @@ import { fenKey } from '../analysis/openings';
 import { getMoves } from '../repertoire/repertoire';
 import { playMoveSound } from '../lib/sound';
 import { useToast } from '../lib/toast';
+import { explainMove } from '../analysis/tactics';
+import { buildAnnotatedPgn, downloadText } from '../lib/annotatedPgn';
 import './Review.css';
 
 const GOOD = new Set<Classification>(['brilliant', 'great', 'best', 'book', 'forced']);
@@ -165,7 +167,10 @@ export default function ReviewPage() {
               {analysis.openingName && <p className="opening"><span className="faint">Apertura</span> {analysis.eco} · {analysis.openingName}</p>}
               <RepertoireSummary moves={moves} />
               <button className="btn btn-primary btn-lg full" onClick={() => { setMode('review'); go(Math.max(ply, 1), false); }}>Empezar revisión</button>
-              <button className="btn btn-ghost full" onClick={() => { void db.analyses.delete(game.id); setAnalysis(null); }}>Re-analizar</button>
+              <div className="row">
+                <button className="btn grow" onClick={() => downloadText(`${game.white}-vs-${game.black}.pgn`.replace(/[^\w.-]+/g, '_'), buildAnnotatedPgn(game, analysis))}>Exportar PGN anotado</button>
+                <button className="btn btn-ghost" onClick={() => { void db.analyses.delete(game.id); setAnalysis(null); }}>Re-analizar</button>
+              </div>
             </div>
           )}
 
@@ -249,6 +254,9 @@ function Feedback({ move, showBest, onShowBest, repMoves, fen }: { move: Analyze
         </div>
         <span className={`score-pill ${(move.evalAfter.lines[0]?.score.cp ?? (move.color === 'w' ? 1 : -1)) >= 0 ? 'w' : 'b'}`}>{formatScore(move.evalAfter.lines[0]?.score)}</span>
       </div>
+      {explainMove(move).length > 0 && (
+        <div className="tactic-tags">{explainMove(move).map((t) => <span key={t} className="tactic-tag">{t}</span>)}</div>
+      )}
       {!good && move.bestSan && (
         <div className="best-line">
           <span className="muted">La mejor era</span>
