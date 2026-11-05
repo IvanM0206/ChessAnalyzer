@@ -13,6 +13,8 @@ import { MoveList } from '../components/MoveList';
 import { CLASS_META, ClassIcon } from '../components/ClassIcon';
 import { IconChevronLeft, IconChevronRight, IconFirst, IconFlip, IconLast, IconAnalysis } from '../components/Icons';
 import { formatScore } from '../lib/format';
+import { fenKey } from '../analysis/openings';
+import { getMoves } from '../repertoire/repertoire';
 import { playMoveSound } from '../lib/sound';
 import { useToast } from '../lib/toast';
 import './Review.css';
@@ -32,6 +34,13 @@ export default function ReviewPage() {
   const [ply, setPly] = useState(0);
   const [flipped, setFlipped] = useState<boolean | null>(null);
   const [showBest, setShowBest] = useState(false);
+
+  const curForRep = analysis?.moves[ply - 1];
+  const repMoves = useLiveQuery(
+    () => (curForRep && game?.userColor && (curForRep.repertoire === 'deviated' || curForRep.repertoire === 'opponent-left')
+      ? getMoves(game.userColor, fenKey(curForRep.fenBefore)) : Promise.resolve([])),
+    [curForRep?.fenBefore, curForRep?.repertoire, game?.userColor],
+  );
 
   useEffect(() => { void getSettings().then(setSettings); }, []);
   useEffect(() => { if (stored) setAnalysis(stored); }, [stored]);
@@ -154,6 +163,7 @@ export default function ReviewPage() {
                 ))}
               </div>
               {analysis.openingName && <p className="opening"><span className="faint">Apertura</span> {analysis.eco} · {analysis.openingName}</p>}
+              <RepertoireSummary moves={moves} />
               <button className="btn btn-primary btn-lg full" onClick={() => { setMode('review'); go(Math.max(ply, 1), false); }}>Empezar revisión</button>
               <button className="btn btn-ghost full" onClick={() => { void db.analyses.delete(game.id); setAnalysis(null); }}>Re-analizar</button>
             </div>
@@ -161,14 +171,17 @@ export default function ReviewPage() {
 
           {analysis && mode === 'review' && moves && (
             <div className="panel-body review-body">
-              <Feedback move={cur} showBest={showBest} onShowBest={() => setShowBest((s) => !s)} />
+              <Feedback move={cur} showBest={showBest} onShowBest={() => setShowBest((s) => !s)} repMoves={repMoves ?? []} fen={fen} />
               <EvalGraph moves={moves} ply={ply} onSelect={(p) => go(p, false)} />
               <MoveList moves={moves} ply={ply} onSelect={(p) => go(p)} />
             </div>
           )}
 
           <footer className="nav-bar">
-            <button className="btn btn-ghost btn-icon" onClick={() => setFlipped(!isFlipped)} title="Girar tablero (F)"><IconFlip /></button>
+            <div className="row">
+              <button className="btn btn-ghost btn-icon" onClick={() => setFlipped(!isFlipped)} title="Girar tablero (F)"><IconFlip /></button>
+              <Link className="btn btn-ghost nav-analyze" to={`/analysis?fen=${encodeURIComponent(fen)}`} title="Abrir esta posición en el análisis libre">Analizar</Link>
+            </div>
             <div className="row">
               <button className="btn btn-icon" onClick={() => go(0)} title="Inicio"><IconFirst /></button>
               <button className="btn btn-icon nav-main" onClick={() => go(ply - 1)} title="Anterior (←)"><IconChevronLeft /></button>
@@ -185,6 +198,21 @@ export default function ReviewPage() {
 
 /** Terminal positions have no engine lines: represent checkmate as a huge cp score. */
 function matedScore(m: AnalyzedMove) { return m.winAfter === 100 ? { cp: m.color === 'w' ? 100000 : -100000 } : undefined; }
+
+function RepertoireSummary({ moves }: { moves: AnalyzedMove[] }) {
+  const inCount = moves.filter((m) => m.repertoire === 'in').length;
+  const exit = moves.find((m) => m.repertoire === 'deviated' || m.repertoire === 'opponent-left');
+  if (!inCount && !exit) return null;
+  const n = Math.ceil(inCount / 2) || 1;
+  const exitNum = exit ? Math.ceil(exit.ply / 2) : 0;
+  return (
+    <p className="opening rep-summary">
+      <span className="faint">Repertorio</span>{' '}
+      {inCount ? `seguiste tu preparación hasta la jugada ${n}` : 'te desviaste desde la primera jugada'}
+      {exit && <span className="faint"> · {exit.repertoire === 'deviated' ? `te desviaste en la ${exitNum}` : `tu rival salió en la ${exitNum}`}</span>}
+    </p>
+  );
+}
 
 function PlayerStrip({ name, elo, color, acc, me }: { name: string; elo?: number; color: 'w' | 'b'; acc?: number; me: boolean }) {
   return (
@@ -206,7 +234,7 @@ function AccCard({ name, acc, light }: { name: string; acc: number; light?: bool
   );
 }
 
-function Feedback({ move, showBest, onShowBest }: { move: AnalyzedMove | null; showBest: boolean; onShowBest: () => void }) {
+function Feedback({ move, showBest, onShowBest, repMoves, fen }: { move: AnalyzedMove | null; showBest: boolean; onShowBest: () => void; repMoves: { san: string }[]; fen: string }) {
   if (!move) return <div className="feedback"><p className="muted">Posición inicial. Usá → para avanzar.</p></div>;
   const meta = CLASS_META[move.classification];
   const good = GOOD.has(move.classification) || move.classification === 'excellent' || move.classification === 'good';
@@ -228,6 +256,19 @@ function Feedback({ move, showBest, onShowBest }: { move: AnalyzedMove | null; s
           {showBest && line && <div className="pv faint">{line.pv.slice(0, 8).join(' ')}</div>}
         </div>
       )}
+      {move.repertoire === 'deviated' && (
+        <div className="rep-banner deviated">
+          <b>Te desviaste de tu repertorio</b>
+          <span>{repMoves.length ? <>tu jugada preparada era {repMoves.map((r, i) => <span key={i}>{i > 0 && ' o '}<b className="rep-san-tag">{r.san}</b></span>)}</> : 'esta posición estaba en tu repertorio'}</span>
+        </div>
+      )}
+      {move.repertoire === 'opponent-left' && (
+        <div className="rep-banner left">
+          <b>Tu rival salió de tu repertorio</b>
+          {repMoves.length > 0 && <span>esperabas {repMoves.map((r) => r.san).join(' o ')}</span>}
+        </div>
+      )}
+      <Link className="analyze-link" to={`/analysis?fen=${encodeURIComponent(fen)}`}>Analizar esta posición →</Link>
     </div>
   );
 }

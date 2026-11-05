@@ -1,0 +1,39 @@
+.ex-page { max-width: 1400px; }
+.ex-layout { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 24px; align-items: start; }
+.ex-board-col { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.ex-board-row { display: flex; gap: 10px; width: min(100%, calc(100vh - 220px)); }
+.ex-board { flex: 1; min-width: 0; aspect-ratio: 1; }
+.ex-nav { width: min(100%, calc(100vh - 220px)); display: flex; align-items: center; justify-content: space-between; padding-left: 38px; }
+.ex-nav .btn-icon svg { width: 20px; height: 20px; }
+.ex-nav-main { padding: 8px 18px; }
+.ex-tags { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.ex-opening { padding: 5px 12px; font-size: 12.5px; color: var(--text); }
+.ex-rep { padding: 5px 12px; font-size: 12.5px; background: rgba(111,174,79,.16); color: var(--accent-hover); animation: pop 320ms var(--ease); max-width: 100%; }
+.small { font-size: 12px; }
+
+.ex-side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.ex-card-head { display: flex; align-items: baseline; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--bg-elev); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+.ex-pad { margin: 0; padding: 14px 16px; }
+.ex-engine { overflow: hidden; }
+.ex-lines { display: flex; flex-direction: column; }
+.ex-line { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.04); min-height: 52px; }
+.ex-line:last-child { border-bottom: 0; }
+.ex-line .score-pill { flex: none; min-width: 52px; text-align: center; font-weight: 800; font-size: 12.5px; padding: 4px 8px; border-radius: 6px; }
+.ex-line .score-pill.w { background: #f1f0ec; color: #2b2a26; }
+.ex-line .score-pill.b { background: #45423c; color: #fff; }
+.ex-line.skeleton { margin: 8px 14px; border-radius: var(--radius); background: linear-gradient(90deg, var(--bg-elev), var(--surface-2), var(--bg-elev)); background-size: 200% 100%; animation: ex-shimmer 1.2s linear infinite; border: 0; min-height: 36px; padding: 0; }
+@keyframes ex-shimmer { to { background-position: -200% 0; } }
+.ex-pv { display: flex; flex-wrap: wrap; gap: 2px 2px; font-size: 13px; line-height: 1.7; max-height: 5.4em; overflow: hidden; }
+.ex-pv-move { border: 0; background: transparent; font: inherit; font-weight: 600; color: var(--text-dim); padding: 0 4px; border-radius: 4px; cursor: pointer; transition: background var(--dur), color var(--dur); }
+.ex-pv-move:first-child { color: var(--text); font-weight: 800; }
+.ex-pv-move:hover { background: var(--accent); color: #fff; }
+
+.ex-moves { display: flex; flex-direction: column; overflow: hidden; }
+.ex-moves .movelist { max-height: 260px; min-height: 80px; }
+.ex-fen { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.ex-fen .input { font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
+
+@media (max-width: 1080px) {
+  .ex-layout { grid-template-columns: 1fr; }
+  .ex-board-row, .ex-nav { width: 100%; }
+}

@@ -4,6 +4,7 @@ import type { AnalyzedMove, Classification, Game, GameAnalysis, PlayerSummary, P
 import { classifyMove } from '../analysis/classify';
 import { fenKey, loadOpenings, lookupOpening } from '../analysis/openings';
 import { gameAccuracy, moveAccuracy, winPctWhite } from '../analysis/winprob';
+import { checkGameAgainstRepertoire } from '../repertoire/repertoire';
 import { getEngine } from './engine';
 
 export const ALL_CLASSES: Classification[] = ['brilliant', 'great', 'best', 'excellent', 'good', 'book', 'inaccuracy', 'mistake', 'miss', 'blunder', 'forced'];
@@ -61,6 +62,13 @@ export async function analyzeGame(game: Game, onProgress?: (done: number, total:
       classification: r.classification, bestSan: best?.san, bestUci: best?.uci,
       accuracy: moveAccuracy(r.winBefore, r.winAfter), openingName: lastOpening?.name,
     });
+  }
+
+  if (game.userColor) {
+    try {
+      const status = await checkGameAgainstRepertoire(out, game.userColor);
+      out.forEach((m, i) => { if (status[i]) m.repertoire = status[i]; });
+    } catch { /* repertoire is optional */ }
   }
 
   const whiteWins = evals.map((e, i) => (e.lines[0] ? winPctWhite(e.lines[0].score) : (out[i - 1]?.color === 'w' ? out[i - 1].winAfter : 100 - (out[i - 1]?.winAfter ?? 50))));
