@@ -1,0 +1,17 @@
+.import-page .tabs { margin-bottom: 16px; }
+.import-card { max-width: 760px; animation: fade-in 220ms var(--ease); }
+.import-grid { display: grid; grid-template-columns: 1fr 220px; gap: 14px; }
+@media (max-width: 600px) { .import-grid { grid-template-columns: 1fr; } }
+
+.dropzone { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 32px 16px; text-align: center; cursor: pointer; border: 2px dashed var(--border); border-radius: var(--radius-lg); color: var(--text-dim); background: var(--bg-elev); transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease), transform var(--dur) var(--ease), color var(--dur); outline: none; }
+.dropzone strong { color: var(--text); }
+.dropzone:hover, .dropzone:focus-visible { border-color: var(--accent); color: var(--accent); }
+.dropzone.dragging { border-color: var(--accent); background: rgba(111,174,79,.1); transform: scale(1.01); color: var(--accent); }
+
+.import-progress { margin-top: 18px; display: flex; flex-direction: column; gap: 8px; animation: fade-in 200ms var(--ease); }
+
+.import-summary { margin-top: 18px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 14px 16px; border-radius: var(--radius); background: rgba(111,174,79,.1); border: 1px solid rgba(111,174,79,.35); animation: slide-up 260ms var(--ease); }
+.import-summary .check { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 800; animation: pop 360ms var(--ease); flex: none; }
+
+.spinner { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; animation: spin 700ms linear infinite; display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }

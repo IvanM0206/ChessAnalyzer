@@ -1,0 +1,49 @@
+[Event "Paris Opera House"]
+[Site "Paris FRA"]
+[Date "1858.??.??"]
+[Round "?"]
+[White "Paul Morphy"]
+[Black "Duke Karl / Count Isouard"]
+[Result "1-0"]
+[ECO "C41"]
+[Opening "Philidor Defense"]
+
+1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7
+8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7
+14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0
+
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2024.03.05"]
+[Round "-"]
+[White "magnus_fan"]
+[Black "rookie99"]
+[Result "0-1"]
+[WhiteElo "1523"]
+[BlackElo "1547"]
+[TimeControl "600"]
+[ECO "A45"]
+[Termination "rookie99 won by checkmate"]
+[Link "https://www.chess.com/game/live/100200300"]
+
+1. d4 Nf6 2. Bg5 e6 3. e4 h6 4. Bxf6 Qxf6 5. Nc3 Bb4 6. Nf3 d6 7. Bd3 Nc6
+8. a3 Bxc3+ 9. bxc3 e5 10. dxe5 Nxe5 11. Nxe5 Qxe5 12. O-O O-O 13. f4 Qe7
+14. e5 dxe5 15. fxe5 Qxe5 16. Re1 Qd6 17. Qh5 Bg4 18. Qh4 0-1
+
+[Event "Rated Blitz game"]
+[Site "https://lichess.org/abcd1234"]
+[Date "2024.05.17"]
+[White "rookie99"]
+[Black "magnus_fan"]
+[Result "1/2-1/2"]
+[UTCDate "2024.05.17"]
+[WhiteElo "1560"]
+[BlackElo "1534"]
+[TimeControl "180+2"]
+[ECO "D35"]
+[Opening "Queen's Gambit Declined: Exchange Variation"]
+[Termination "Normal"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 exd5 5. Bg5 Be7 6. e3 O-O 7. Bd3 Nbd7
+8. Nge2 c6 9. O-O Re8 10. Ng3 Nf8 11. Qc2 Ne6 12. Bh4 g6 13. Bxf6 Bxf6
+14. Rae1 Bg7 1/2-1/2

@@ -1,0 +1,8 @@
+.evalbar { position: relative; width: 28px; border-radius: 6px; overflow: hidden; background: #403d39; display: flex; flex-direction: column; justify-content: flex-end; box-shadow: inset 0 0 0 1px rgba(0,0,0,.25); }
+.evalbar.flipped { flex-direction: column-reverse; }
+.evalbar-white { background: #f4f3ef; transition: height 520ms var(--ease); }
+.evalbar-label { position: absolute; left: 0; right: 0; text-align: center; font-size: 10.5px; font-weight: 800; letter-spacing: -.02em; }
+.evalbar-label.bottom { bottom: 6px; color: #403d39; }
+.evalbar-label.top { top: 6px; color: #f4f3ef; }
+.evalbar.flipped .evalbar-label.bottom { bottom: auto; top: 6px; }
+.evalbar.flipped .evalbar-label.top { top: auto; bottom: 6px; }
