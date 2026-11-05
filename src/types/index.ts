@@ -60,6 +60,8 @@ export interface AnalyzedMove {
   accuracy: number;         // 0..100 per-move
   openingName?: string;
   outOfRepertoire?: boolean;
+  /** 'deviated' = I left my repertoire here; 'opponent-left' = opponent played a move not in my repertoire */
+  repertoire?: 'in' | 'deviated' | 'opponent-left';
 }
 
 export interface PlayerSummary {
@@ -104,3 +106,34 @@ export const DEFAULT_SETTINGS: Settings = {
   id: 'settings', depth: 16, multiPv: 2, thresholds: DEFAULT_THRESHOLDS,
   boardTheme: 'green', showArrows: true, soundOn: true,
 };
+
+/** One edge of the repertoire tree: in position `fenKey`, the move `uci` is part of my `side` repertoire. */
+export interface RepertoireMove {
+  id: string;               // `${side}|${fenKey}|${uci}`
+  side: Color;              // which repertoire (playing as White or as Black)
+  fenKey: string;           // first 4 FEN fields of the position before the move
+  uci: string;
+  san: string;
+  comment?: string;
+  createdAt: number;
+}
+
+/** A training exercise built from one of my mistakes. */
+export interface Drill {
+  id: string;               // `${gameId}:${ply}`
+  gameId: string;
+  ply: number;
+  fen: string;              // position before my move (I'm to move)
+  color: Color;
+  bestUci: string;
+  bestSan: string;
+  playedSan: string;
+  classification: Classification;
+  createdAt: number;
+  due: number;              // timestamp when it's due again
+  interval: number;         // days
+  ease: number;             // SM-2 style ease factor
+  reps: number;
+  lapses: number;
+  lastResult?: 'pass' | 'fail';
+}

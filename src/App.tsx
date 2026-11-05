@@ -1,13 +1,21 @@
 import { NavLink, Route, Routes } from 'react-router-dom';
-import { IconImport, IconLibrary, IconSettings } from './components/Icons';
+import { IconBoard, IconImport, IconLibrary, IconRepertoire, IconSettings, IconStats, IconTrainer } from './components/Icons';
 import LibraryPage from './pages/Library';
 import ImportPage from './pages/Import';
 import ReviewPage from './pages/Review';
 import SettingsPage from './pages/Settings';
+import RepertoirePage from './pages/Repertoire';
+import ExplorerPage from './pages/Explorer';
+import TrainerPage from './pages/Trainer';
+import StatsPage from './pages/Stats';
 
 const nav = [
   { to: '/', label: 'Mis partidas', icon: IconLibrary, end: true },
   { to: '/import', label: 'Importar', icon: IconImport },
+  { to: '/analysis', label: 'Análisis libre', icon: IconBoard },
+  { to: '/repertoire', label: 'Repertorio', icon: IconRepertoire },
+  { to: '/trainer', label: 'Entrenador', icon: IconTrainer },
+  { to: '/stats', label: 'Estadísticas', icon: IconStats },
   { to: '/settings', label: 'Configuración', icon: IconSettings },
 ];
 
@@ -28,6 +36,10 @@ export default function App() {
           <Route path="/import" element={<ImportPage />} />
           <Route path="/review/:id" element={<ReviewPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/analysis" element={<ExplorerPage />} />
+          <Route path="/repertoire" element={<RepertoirePage />} />
+          <Route path="/trainer" element={<TrainerPage />} />
+          <Route path="/stats" element={<StatsPage />} />
         </Routes>
       </main>
     </div>

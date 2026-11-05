@@ -1,5 +1,5 @@
 import Dexie, { type Table } from 'dexie';
-import type { Game, GameAnalysis, Settings } from '../types';
+import type { Drill, Game, GameAnalysis, RepertoireMove, Settings } from '../types';
 import { DEFAULT_SETTINGS } from '../types';
 
 export interface EvalCacheEntry { key: string; fen: string; depth: number; multiPv: number; data: unknown }
@@ -9,6 +9,8 @@ class AnalyzerDB extends Dexie {
   analyses!: Table<GameAnalysis, string>;
   settings!: Table<Settings, string>;
   evalCache!: Table<EvalCacheEntry, string>;
+  repertoire!: Table<RepertoireMove, string>;
+  drills!: Table<Drill, string>;
 
   constructor() {
     super('chess-analyzer');
@@ -17,6 +19,10 @@ class AnalyzerDB extends Dexie {
       analyses: 'gameId, createdAt',
       settings: 'id',
       evalCache: 'key',
+    });
+    this.version(2).stores({
+      repertoire: 'id, side, fenKey, [side+fenKey]',
+      drills: 'id, gameId, due, classification',
     });
   }
 }
