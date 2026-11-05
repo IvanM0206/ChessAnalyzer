@@ -84,3 +84,20 @@ describe('explainMove', () => {
     expect(r).toContain('Permite ganar material');
   });
 });
+
+import { createsPin, isDiscovered } from '../tactics';
+describe('pins & discoveries', () => {
+  it('bishop pins knight to king', () => {
+    const c = new Chess('4k3/8/2n5/8/B7/8/8/4K3 w - - 0 1');
+    expect(createsPin(c, 'a4')).toBe(true);
+  });
+  it('no pin when nothing behind', () => {
+    expect(createsPin(new Chess('8/8/2n5/8/B7/8/8/4K2k w - - 0 1'), 'a4')).toBe(false);
+  });
+  it('detects a discovered attack on the queen', () => {
+    const fen = '3q3k/8/8/3N4/8/8/8/3R2K1 w - - 0 1';
+    const before = new Chess(fen); const after = new Chess(fen);
+    after.move('Nb6');
+    expect(isDiscovered(before, after, 'b6', 'w')).toBe(true);
+  });
+});

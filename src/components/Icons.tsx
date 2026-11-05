@@ -17,3 +17,4 @@ export const IconPlay = (p: P) => <svg {...base} {...p}><path d="M7 4v16l13-8z" 
 export const IconRepertoire = (p: P) => <svg {...base} {...p}><path d="M6 3v6m0 0a3 3 0 1 0 0 6m0-6a3 3 0 1 1 0 6m0 0v6M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 0c0 4-6 3-9 6" /></svg>;
 export const IconTrainer = (p: P) => <svg {...base} {...p}><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1" /></svg>;
 export const IconStats = (p: P) => <svg {...base} {...p}><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg>;
+export const IconBook = (p: P) => <svg {...base} {...p}><path d="M2 5c3-1.5 7-1.5 10 1 3-2.5 7-2.5 10-1v14c-3-1.5-7-1.5-10 1-3-2.5-7-2.5-10-1z" /><path d="M12 6v14" /></svg>;
