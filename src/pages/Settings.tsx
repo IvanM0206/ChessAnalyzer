@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { db, getSettings, saveSettings } from '../db/db';
 import { detectUserColor } from '../import/pgn';
 import { useToast } from '../lib/toast';
+import { PIECE_SETS, pieceUrl } from '../components/pieceSets';
 import { DEFAULT_SETTINGS, DEFAULT_THRESHOLDS, type ClassificationThresholds, type Settings } from '../types';
 import './Settings.css';
 
@@ -183,6 +184,15 @@ export default function SettingsPage() {
                 <i /><i /><i /><i />
               </span>
               <span>{t.label}</span>
+            </button>
+          ))}
+        </div>
+        <div className="set-row"><div className="grow"><strong>Piezas</strong><div className="muted set-hint">Estilo de las piezas del tablero.</div></div></div>
+        <div className="set-themes">
+          {PIECE_SETS.map((p) => (
+            <button key={p.id} className={`theme-opt${s.pieceSet === p.id ? ' active' : ''}`} onClick={() => update({ pieceSet: p.id })} aria-pressed={s.pieceSet === p.id}>
+              <span className="piece-prev"><img src={pieceUrl(p.id, 'wN')} alt="" /><img src={pieceUrl(p.id, 'bQ')} alt="" /></span>
+              <span>{p.label}</span>
             </button>
           ))}
         </div>

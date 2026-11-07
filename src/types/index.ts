@@ -80,6 +80,8 @@ export interface GameAnalysis {
   eco?: string;
 }
 
+export type PieceSet = 'cburnett' | 'merida' | 'california';
+
 export interface Settings {
   id: 'settings';
   chesscomUser?: string;
@@ -88,6 +90,7 @@ export interface Settings {
   multiPv: number;          // default 2
   thresholds: ClassificationThresholds;
   boardTheme: 'green' | 'brown' | 'blue';
+  pieceSet: PieceSet;
   showArrows: boolean;
   soundOn: boolean;
 }
@@ -104,7 +107,7 @@ export const DEFAULT_THRESHOLDS: ClassificationThresholds = {
 
 export const DEFAULT_SETTINGS: Settings = {
   id: 'settings', depth: 16, multiPv: 2, thresholds: DEFAULT_THRESHOLDS,
-  boardTheme: 'green', showArrows: true, soundOn: true,
+  boardTheme: 'green', pieceSet: 'cburnett', showArrows: true, soundOn: true,
 };
 
 /** One edge of the repertoire tree: in position `fenKey`, the move `uci` is part of my `side` repertoire. */
