@@ -3,6 +3,7 @@ import { db, getSettings, saveSettings } from '../db/db';
 import { detectUserColor } from '../import/pgn';
 import { useToast } from '../lib/toast';
 import { PIECE_SETS, pieceUrl } from '../components/pieceSets';
+import { SOUND_SETS, playMoveSound, setSoundSet } from '../lib/sound';
 import { DEFAULT_SETTINGS, DEFAULT_THRESHOLDS, type ClassificationThresholds, type Settings } from '../types';
 import './Settings.css';
 
@@ -198,6 +199,17 @@ export default function SettingsPage() {
         </div>
         <Toggle checked={s.showArrows} onChange={(v) => update({ showArrows: v })} label="Mostrar flechas" hint="Flecha con la mejor jugada del motor." />
         <Toggle checked={s.soundOn} onChange={(v) => update({ soundOn: v })} label="Sonidos" hint="Sonido al mover las piezas." />
+        {s.soundOn && (
+          <div className="set-row">
+            <div className="grow"><strong>Estilo de sonido</strong><div className="muted set-hint">Al elegir uno se reproduce de muestra.</div></div>
+            <div className="tabs">
+              {SOUND_SETS.map((o) => (
+                <button key={o.id} className={`tab${s.soundSet === o.id ? ' active' : ''}`} aria-pressed={s.soundSet === o.id}
+                  onClick={() => { setSoundSet(o.id); update({ soundSet: o.id }); playMoveSound(false); }}>{o.label}</button>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="card card-pad set-section">

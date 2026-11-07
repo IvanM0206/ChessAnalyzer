@@ -80,6 +80,7 @@ export interface GameAnalysis {
   eco?: string;
 }
 
+export type SoundSet = 'standard' | 'sfx' | 'piano' | 'nes';
 export type PieceSet = 'cburnett' | 'merida' | 'california';
 
 export interface Settings {
@@ -93,6 +94,7 @@ export interface Settings {
   pieceSet: PieceSet;
   showArrows: boolean;
   soundOn: boolean;
+  soundSet: SoundSet;
 }
 
 /** Expected-points loss thresholds (0..1 scale). */
@@ -107,7 +109,7 @@ export const DEFAULT_THRESHOLDS: ClassificationThresholds = {
 
 export const DEFAULT_SETTINGS: Settings = {
   id: 'settings', depth: 16, multiPv: 2, thresholds: DEFAULT_THRESHOLDS,
-  boardTheme: 'green', pieceSet: 'cburnett', showArrows: true, soundOn: true,
+  boardTheme: 'green', pieceSet: 'cburnett', showArrows: true, soundOn: true, soundSet: 'standard',
 };
 
 /** One edge of the repertoire tree: in position `fenKey`, the move `uci` is part of my `side` repertoire. */
