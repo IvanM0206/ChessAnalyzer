@@ -5,6 +5,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { getSettings } from '../db/db';
 import { DEFAULT_SETTINGS, type Classification } from '../types';
 import { ClassIcon } from './ClassIcon';
+import './Board.css';
 import { getPieces } from './pieceSets';
 
 export const BOARD_THEMES = {
@@ -73,7 +74,7 @@ export function Board({ fen, orientation, theme, lastMove, arrows = [], onDrop }
               <div style={{ position: 'absolute', inset: 0, background: hl, pointerEvents: 'none', transition: 'background 200ms' }} />
             )}
             {square === selected && targets.size > 0 && (
-              <div style={{ position: 'absolute', inset: 0, background: 'rgba(255, 235, 59, .5)', pointerEvents: 'none' }} />
+              <div key={`${fen}-${selected}`} className="sq-selected" />
             )}
             {children}
             {targets.has(square) && (
@@ -81,7 +82,7 @@ export function Board({ fen, orientation, theme, lastMove, arrows = [], onDrop }
                 style={{
                   position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10,
                   ...(targets.get(square)
-                    ? { background: 'radial-gradient(transparent 0%, transparent 79%, rgba(0,0,0,.16) 80%)' }
+                    ? { background: 'radial-gradient(circle closest-side, transparent 66%, rgba(0,0,0,.16) 67%, rgba(0,0,0,.16) 80%, transparent 81%)' }
                     : { background: 'radial-gradient(rgba(0,0,0,.16) 19%, transparent 20%)' }),
                 }}
               />
