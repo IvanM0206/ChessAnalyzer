@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Copiloto de Operador · Soflex</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Copiloto de Operador</h1>
+    <span id="provider" class="badge">…</span>
+    <span class="hint">Ctrl+Enter analizar · Ctrl+S derivar carta</span>
+  </header>
+
+  <main class="grid">
+    <!-- Left: transcript -->
+    <section class="card">
+      <h2>Transcripción</h2>
+      <select id="samples"><option value="">— Cargar transcripción de ejemplo —</option></select>
+      <textarea id="transcript" placeholder="Pegá o escribí la desgrabación de la llamada…"></textarea>
+      <button id="analyze" class="btn btn-primary">Analizar</button>
+    </section>
+
+    <!-- Right: suggestion, editable by the operator -->
+    <section class="card" id="result" hidden>
+      <div class="row between">
+        <h2>Sugerencia del copiloto</h2>
+        <span id="confidence" class="badge"></span>
+      </div>
+      <ul id="warnings" class="warnings"></ul>
+
+      <div class="prio-row">
+        <label>Prioridad
+          <select id="prioridad"><option>P1</option><option>P2</option><option>P3</option><option>P4</option></select>
+        </label>
+        <label>Categoría <input id="categoria" /></label>
+        <label class="grow">Subcategoría <input id="subcategoria" /></label>
+      </div>
+      <p id="prio-why" class="muted"></p>
+
+      <h3>Ubicación</h3>
+      <div class="fields">
+        <label>Calle <input id="calle" /><small id="calle-ev"></small></label>
+        <label>Altura <input id="altura" /><small id="altura-ev"></small></label>
+        <label>Intersección <input id="interseccion" /><small id="interseccion-ev"></small></label>
+        <label>Barrio <input id="barrio" /><small id="barrio-ev"></small></label>
+      </div>
+
+      <h3>Instrucciones pre-arribo <span class="muted">(leer al llamante)</span></h3>
+      <ol id="instructions" class="instructions"></ol>
+
+      <h3>Checklist de protocolo</h3>
+      <ul id="checklist" class="checklist"></ul>
+
+      <h3>Riesgos</h3>
+      <div id="riesgos" class="chips"></div>
+
+      <h3>Recursos sugeridos <span class="muted">(decide el despachador)</span></h3>
+      <p id="recursos"></p>
+
+      <label>Notas del operador <textarea id="notas" rows="2"></textarea></label>
+      <button id="derive" class="btn btn-primary">Derivar Carta de Llamada</button>
+      <p id="derive-status" class="muted"></p>
+    </section>
+  </main>
+
+  <section class="card cards">
+    <h2>Cartas derivadas</h2>
+    <table><thead><tr><th>#</th><th>Hora</th><th>Prioridad</th><th>Tipo</th><th>Ubicación</th></tr></thead>
+      <tbody id="cards"></tbody></table>
+  </section>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

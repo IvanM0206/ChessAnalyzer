@@ -1,0 +1,15 @@
+services:
+  copilot:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      LLM_PROVIDER: ${LLM_PROVIDER:-mock}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-opus-5-5}
+      DB_PATH: /srv/state/copilot.sqlite3
+    volumes:
+      - copilot-state:/srv/state
+
+volumes:
+  copilot-state:
